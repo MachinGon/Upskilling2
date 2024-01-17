@@ -1,5 +1,4 @@
 package com.example.demo2.DAO;
-
 import com.example.demo2.model.Producto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

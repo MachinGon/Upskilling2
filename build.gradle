@@ -2,6 +2,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '2.7.16'
 	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+	id 'com.github.node-gradle.node' version "2.2.2"
 }
 
 group = 'com.example'
@@ -21,9 +22,41 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.ws:spring-ws-core:4.0.5'
 	implementation 'mysql:mysql-connector-java:8.0.33'
+	implementation 'org.projectlombok:lombok:1.18.28'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	annotationProcessor 'org.projectlombok:lombok:1.18.28'
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+tasks.register('appNpmInstall', NpmTask) {
+	description = 'Installs all dependencies from package.json'
+	workingDir = file("${project.projectDir}/src/main/webapp")
+	args = ['install']
+}
+
+tasks.register('appNpmBuild', NpmTask) {
+	dependsOn 'appNpmInstall'
+	description = 'Builds project'
+	workingDir = file("${project.projectDir}/src/main/webapp")
+	args = ['run', 'build']
+}
+
+tasks.register('copyWebApp', Copy) {
+	dependsOn 'appNpmBuild'
+	description = 'Copies built project to where it will be served'
+	from 'src/main/webapp/build'
+	into 'build/resources/main/static/.'
+}
+
+node {
+	download = true
+	version = '12.13.1'
+	npmVersion = '6.12.1'
+	workDir = file("${project.buildDir}/nodejs")
+	npmWorkDir = file("${project.buildDir}/npm")
+}
+

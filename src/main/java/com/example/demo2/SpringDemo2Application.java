@@ -9,6 +9,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
+		//(scanBasePackages = {"com.example.demo2.model.*", "com.example.demo2.DAO.*"})
+//@EnableJpaRepositories(basePackages ={"com.example.demo2.DAO.*", "com.example.demo2.controller.*", "com.example.demo2.model.*"})
+//@EntityScan(basePackages ={"com.example.demo2.model.*", "com.example.demo2.DAO.*", "com.example.demo2.controller.*"})
 public class SpringDemo2Application implements CommandLineRunner{
 	@Autowired
 	ApplicationContextProvider applicationContextProvider;
@@ -27,8 +30,10 @@ public class SpringDemo2Application implements CommandLineRunner{
 		//tablas: customerID(pendiente), productos
 		//RESTController, Repository, Service
 
-		//mie 15 Nov
+		//mie 17 Ene
 		//manyToMany JPA
+		//AQUI en codigo, agregar modelo de tabla Compra, EL ENTITY
+		//4. Many-to-Many With a New Entity
 
 	}
 
@@ -43,7 +48,7 @@ public class SpringDemo2Application implements CommandLineRunner{
 		Producto prodNuevo = new Producto();
 		prodNuevo.setProductName("marinela2");
 		prodNuevo.setProductDesc("testImproved");
-		prodNuevo.setProductPrice(new Double(35));
+		prodNuevo.setProductPrice(35.0);
 		productoRepository.save(prodNuevo);
 	}
 }
